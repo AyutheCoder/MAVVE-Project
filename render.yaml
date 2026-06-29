@@ -1,0 +1,54 @@
+version: "1"
+
+services:
+  - type: web
+    name: mavve-backend
+    env: python
+    buildCommand: "cd backend && pip install -r requirements.txt && alembic upgrade head && python db/seed.py"
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mavve-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: mavve-redis
+          property: connectionString
+      - key: LLM_PROVIDER
+        value: "openrouter"
+      - key: LLM_MODEL_NAME
+        value: "google/gemini-2.0-flash-001"
+      - key: BHASHINI_MOCK_MODE
+        value: "true"
+      # These need to be added manually in the Render Dashboard
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: WHATSAPP_API_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        sync: false
+
+  - type: web
+    name: mavve-frontend
+    env: node
+    buildCommand: "cd frontend && npm install && npm run build"
+    startCommand: "npm install -g serve && serve -s frontend/dist -l $PORT"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: mavve-backend
+          property: url
+
+  - type: redis
+    name: mavve-redis
+    ipAllowList: []
+
+databases:
+  - name: mavve-db
+    databaseName: mavvedb
+    user: mavveuser
