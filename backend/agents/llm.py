@@ -23,7 +23,7 @@ def get_llm(temperature: float | None = None) -> BaseChatModel:
         return ChatOpenAI(
             model=settings.LLM_MODEL_NAME,
             temperature=temp,
-            openai_api_key=settings.OPENROUTER_API_KEY,
+            openai_api_key=settings.OPENROUTER_API_KEY or "dummy_key",
             openai_api_base="https://openrouter.ai/api/v1",
             default_headers={
                 "HTTP-Referer": "https://mavve.app",
@@ -36,7 +36,7 @@ def get_llm(temperature: float | None = None) -> BaseChatModel:
         return ChatOpenAI(
             model=settings.LLM_MODEL_NAME,
             temperature=temp,
-            openai_api_key=settings.OPENAI_API_KEY,
+            openai_api_key=settings.OPENAI_API_KEY or "dummy_key",
         )
 
     else:  # Default: gemini
