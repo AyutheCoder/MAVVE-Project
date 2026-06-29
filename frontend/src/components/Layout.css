@@ -440,8 +440,12 @@
     height: 60px;
   }
 
-  /* Hide non-essential top bar elements */
+  /* Show demo toggle but hide text on mobile to save space */
   .demo-toggle-wrap {
+    display: flex !important;
+    padding: 0.15rem 0.4rem !important;
+  }
+  .demo-toggle-wrap span:first-child {
     display: none !important;
   }
 
