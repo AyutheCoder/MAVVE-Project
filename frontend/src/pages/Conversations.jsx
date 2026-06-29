@@ -251,8 +251,9 @@ export default function Conversations() {
                 <div>
                   <h2>{selectedConv.id}</h2>
                   <div className="header-sub">
-                  <span>{selectedConv.phone}</span>
-                  <span>{selectedConv.lang.e} {selectedConv.lang.name}</span>
+                    <span>{selectedConv.phone}</span>
+                    <span>{selectedConv.lang.e} {selectedConv.lang.name}</span>
+                  </div>
                 </div>
               </div>
               <div className="header-actions">
