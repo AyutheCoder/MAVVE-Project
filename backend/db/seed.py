@@ -370,6 +370,8 @@ async def seed_database():
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
     from db.database import AsyncSessionLocal, create_all_tables
+    from models.user import User
+    from sqlalchemy import select
 
     print("🌱 MAVVE Seed Script")
     print("=" * 50)
@@ -378,6 +380,12 @@ async def seed_database():
     print("📦 Creating tables...")
     await create_all_tables()
     print("   ✅ Tables created")
+
+    async with AsyncSessionLocal() as session:
+        existing_user = await session.execute(select(User).limit(1))
+        if existing_user.scalar_first() is not None:
+            print("✨ Database is already seeded. Skipping...")
+            return
 
     # Generate data
     print("👤 Generating 25 users...")
