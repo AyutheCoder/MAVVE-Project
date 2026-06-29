@@ -242,6 +242,8 @@
   border-radius: 2px;
   transition: all 0.2s;
   cursor: pointer;
+  min-height: 12px;
+  max-height: 28px;
 }
 
 .heatmap-cell:hover {
@@ -251,15 +253,39 @@
   position: relative;
 }
 
+/* ── Agents Bottom Row ── */
+.agents-bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.25rem;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1100px) {
   .flow-vis-container { grid-template-columns: 1fr; }
   .sim-log { border-left: none; border-top: 1px solid var(--border-light); max-height: 200px; }
   .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .agents-bottom-row { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
   .metrics-grid { grid-template-columns: 1fr; }
+  .agents-bottom-row { grid-template-columns: 1fr; }
+  .heatmap-cell {
+    aspect-ratio: auto;
+    min-height: 8px;
+    max-height: 14px;
+  }
+  .heatmap-container {
+    grid-template-columns: 30px repeat(24, 1fr);
+    gap: 1px;
+  }
+  .heatmap-header {
+    font-size: 0.45rem;
+  }
+  .heatmap-day {
+    font-size: 0.55rem;
+  }
 }
 
 /* ── Overlay Card for Agent Metrics ── */
@@ -403,12 +429,4 @@
   to { r: 15; opacity: 0.8; }
 }
 
-@media (max-width: 768px) {
-  .heatmap-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .heatmap-container > div {
-    min-width: 600px;
-  }
-}
+

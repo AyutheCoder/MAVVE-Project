@@ -339,8 +339,23 @@
 @media (max-width: 768px) {
   .charts-grid-3 { grid-template-columns: 1fr; }
   .bottom-grid { grid-template-columns: 1fr; }
-  .impact-grid { grid-template-columns: 1fr; }
+  .impact-grid { grid-template-columns: 1fr 1fr; }
   .impact-header { flex-direction: column; }
+  .impact-value { font-size: 1.5rem; }
+  .impact-hero { padding: 1rem; }
+  .stat-value { font-size: 1.35rem; }
+  .chart-card { min-height: 260px; }
+  .chart-container { min-height: 200px; }
+  .flip-container { min-height: 340px; }
+  .data-table th, .data-table td { padding: 0.5rem; font-size: 0.75rem; }
+  .intercept-modal { width: 95%; max-height: 90vh; }
+  .chat-bubble { font-size: 0.85rem; padding: 0.75rem 1rem; }
+}
+
+@media (max-width: 480px) {
+  .impact-grid { grid-template-columns: 1fr; }
+  .impact-value { font-size: 1.25rem; }
+  .stats-grid { grid-template-columns: 1fr; }
 }
 
 /* ── Live Intercept Modal ── */

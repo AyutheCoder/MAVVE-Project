@@ -325,22 +325,20 @@ export default function Agents() {
 
         <div className="glass-card" style={{padding: '1.25rem'}}>
           <h2 style={{fontSize: '1rem', marginBottom: '1rem'}}>Intervention Heatmap (Peak Hours)</h2>
-          <div style={{ overflowX: 'auto', width: '100%', paddingBottom: '0.5rem' }}>
-            <div className="heatmap-container" style={{ minWidth: '600px' }}>
-              <div></div>
-              {Array.from({length: 24}).map((_, i) => (
-                <div key={i} className="heatmap-header">{i}h</div>
-              ))}
-              
-              {days.map((day, i) => (
-                <React.Fragment key={day}>
-                  <div className="heatmap-day">{day}</div>
-                  {heatmapData[i].map((val, j) => (
-                    <div key={`${i}-${j}`} className="heatmap-cell" style={{backgroundColor: getIntensityColor(val)}} title={`${val} sessions at ${j}:00 on ${day}`}></div>
-                  ))}
-                </React.Fragment>
-              ))}
-            </div>
+          <div className="heatmap-container">
+            <div></div>
+            {Array.from({length: 24}).map((_, i) => (
+              <div key={i} className="heatmap-header">{i}h</div>
+            ))}
+            
+            {days.map((day, i) => (
+              <React.Fragment key={day}>
+                <div className="heatmap-day">{day}</div>
+                {heatmapData[i].map((val, j) => (
+                  <div key={`${i}-${j}`} className="heatmap-cell" style={{backgroundColor: getIntensityColor(val)}} title={`${val} sessions at ${j}:00 on ${day}`}></div>
+                ))}
+              </React.Fragment>
+            ))}
           </div>
           <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.5rem', marginTop: '0.75rem', fontSize: '0.7rem', color: 'var(--text-secondary)'}}>
             <span>Less</span>
