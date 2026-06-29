@@ -4,6 +4,7 @@ Uses pydantic-settings for type-safe config management.
 """
 
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
 from typing import Optional
 
 
@@ -19,6 +20,15 @@ class Settings(BaseSettings):
     # ── Database ─────────────────────────────────────────
     DATABASE_URL: str = "postgresql+asyncpg://mavve:mavve_secret@localhost:5432/mavve_db"
     DATABASE_ECHO: bool = False
+
+    @field_validator("DATABASE_URL")
+    @classmethod
+    def fix_database_url(cls, v: str) -> str:
+        if v and v.startswith("postgres://"):
+            return v.replace("postgres://", "postgresql+asyncpg://", 1)
+        if v and v.startswith("postgresql://"):
+            return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return v
 
     # ── Redis ────────────────────────────────────────────
     REDIS_URL: str = "redis://localhost:6379/0"
