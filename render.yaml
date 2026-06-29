@@ -38,11 +38,10 @@ services:
     buildCommand: "cd frontend && npm install && npm run build"
     startCommand: "npm install -g serve && serve -s frontend/dist -l $PORT"
     envVars:
+      # You will need to manually set this in the Render Dashboard 
+      # to the URL of the mavve-backend service once it is created (e.g. https://mavve-backend-xxx.onrender.com)
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: mavve-backend
-          property: url
+        sync: false
 
   - type: redis
     name: mavve-redis
