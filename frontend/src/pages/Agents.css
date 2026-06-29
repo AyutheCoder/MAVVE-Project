@@ -402,3 +402,13 @@
   from { r: 5; opacity: 0.3; }
   to { r: 15; opacity: 0.8; }
 }
+
+@media (max-width: 768px) {
+  .heatmap-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .heatmap-container > div {
+    min-width: 600px;
+  }
+}

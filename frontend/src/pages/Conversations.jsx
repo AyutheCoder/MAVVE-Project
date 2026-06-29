@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Search, Play, Download, MapPin, MessageSquare, CreditCard, 
-  CheckCircle, XCircle, Clock, PlayCircle, Mic, AlertCircle 
+  CheckCircle, XCircle, Clock, PlayCircle, Mic, AlertCircle, ArrowLeft
 } from 'lucide-react';
 import './Conversations.css';
 
@@ -181,7 +181,7 @@ export default function Conversations() {
     <div className="conversations-page">
       
       {/* Left Panel */}
-      <div className="conv-list-panel">
+      <div className={`conv-list-panel ${selectedConv ? 'mobile-hidden' : ''}`}>
         <div className="list-header">
           <div className="search-wrap">
             <Search className="search-icon" size={16} />
@@ -229,7 +229,7 @@ export default function Conversations() {
       </div>
 
       {/* Right Panel */}
-      <div className="conv-detail-panel">
+      <div className={`conv-detail-panel ${!selectedConv ? 'mobile-hidden' : ''}`}>
         {!selectedConv ? (
           <div className="empty-state">
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
@@ -240,9 +240,17 @@ export default function Conversations() {
         ) : (
           <>
             <div className="detail-header">
-              <div className="header-info">
-                <h2>{selectedConv.id}</h2>
-                <div className="header-sub">
+              <div className="header-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <button 
+                  className="mobile-back-btn btn-icon" 
+                  onClick={() => setSelectedConv(null)} 
+                  title="Back to list"
+                >
+                  <ArrowLeft size={20} />
+                </button>
+                <div>
+                  <h2>{selectedConv.id}</h2>
+                  <div className="header-sub">
                   <span>{selectedConv.phone}</span>
                   <span>{selectedConv.lang.e} {selectedConv.lang.name}</span>
                 </div>
