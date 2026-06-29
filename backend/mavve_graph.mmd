@@ -1,0 +1,38 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	analyze_risk(analyze_risk)
+	address_agent(address_agent)
+	intent_agent(intent_agent)
+	prepaid_agent(prepaid_agent)
+	human_input(human_input)
+	dispatch_order(dispatch_order)
+	cancel_order(cancel_order)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> analyze_risk;
+	address_agent -.-> cancel_order;
+	address_agent -.-> dispatch_order;
+	address_agent -.-> human_input;
+	analyze_risk -.-> address_agent;
+	analyze_risk -.-> intent_agent;
+	analyze_risk -.-> prepaid_agent;
+	human_input -.-> address_agent;
+	human_input -.-> analyze_risk;
+	human_input -.-> cancel_order;
+	human_input -.-> intent_agent;
+	human_input -.-> prepaid_agent;
+	intent_agent -.-> cancel_order;
+	intent_agent -.-> dispatch_order;
+	intent_agent -.-> human_input;
+	prepaid_agent -.-> cancel_order;
+	prepaid_agent -.-> dispatch_order;
+	prepaid_agent -.-> human_input;
+	cancel_order --> __end__;
+	dispatch_order --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

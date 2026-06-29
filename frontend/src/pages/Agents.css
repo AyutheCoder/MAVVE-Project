@@ -1,0 +1,404 @@
+.agents-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Simulation Button ── */
+.sim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.4);
+  background: rgba(var(--accent-primary-rgb), 0.1);
+  color: var(--accent-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.sim-btn:hover {
+  background: rgba(var(--accent-primary-rgb), 0.2);
+  transform: translateY(-1px);
+}
+
+.sim-btn.active {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+/* ── SVG Flow Visualizer ── */
+.flow-vis-container {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  min-height: 340px;
+}
+
+.flow-svg-wrapper {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flow-svg {
+  width: 100%;
+  max-height: 320px;
+}
+
+.flow-line {
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+  transition: all 0.5s;
+}
+
+.flow-line.active {
+  stroke: var(--accent-primary);
+  stroke-width: 2.5;
+  stroke-dasharray: none;
+  filter: drop-shadow(0 0 4px rgba(var(--accent-primary-rgb), 0.5));
+}
+
+.node-rect {
+  fill: rgba(255, 255, 255, 0.04);
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+  transition: all 0.4s;
+}
+
+.orchestrator-rect {
+  fill: rgba(var(--accent-primary-rgb), 0.08);
+  stroke: rgba(var(--accent-primary-rgb), 0.35);
+}
+
+.dispatch-rect {
+  fill: rgba(16, 185, 129, 0.08);
+  stroke: rgba(16, 185, 129, 0.3);
+}
+
+.cancel-rect {
+  fill: rgba(239, 68, 68, 0.08);
+  stroke: rgba(239, 68, 68, 0.3);
+}
+
+.flow-g-node.glow .node-rect {
+  fill: rgba(var(--accent-primary-rgb), 0.15);
+  stroke: var(--accent-primary);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 10px rgba(var(--accent-primary-rgb), 0.4));
+}
+
+.flow-g-node.glow .dispatch-rect {
+  fill: rgba(16, 185, 129, 0.2);
+  stroke: #10b981;
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
+}
+
+.node-text {
+  fill: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}
+
+.node-subtext {
+  fill: var(--text-muted);
+  font-size: 10px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Simulation Log ── */
+.sim-log {
+  border-left: 1px solid var(--border-light);
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sim-log-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sim-log-entry {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.15);
+  border-left: 3px solid rgba(var(--accent-primary-rgb), 0.4);
+  animation: cardEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.sim-log-step {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-right: 0.5rem;
+  text-transform: uppercase;
+}
+
+.sim-log-entry.sim-complete {
+  background: rgba(16, 185, 129, 0.1);
+  border-left-color: #10b981;
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* ── Metrics Grid ── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.metric-card {
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 170px;
+}
+
+.metric-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.stat-box {
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-sm);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.15rem;
+}
+
+.stat-val {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── Heatmap ── */
+.heatmap-container {
+  display: grid;
+  grid-template-columns: 40px repeat(24, 1fr);
+  gap: 2px;
+  font-size: 0.6rem;
+}
+
+.heatmap-header {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.55rem;
+}
+
+.heatmap-day {
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.4);
+  box-shadow: 0 0 6px rgba(var(--accent-primary-rgb), 0.5);
+  z-index: 2;
+  position: relative;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .flow-vis-container { grid-template-columns: 1fr; }
+  .sim-log { border-left: none; border-top: 1px solid var(--border-light); max-height: 200px; }
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Overlay Card for Agent Metrics ── */
+.agent-card-container {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.agent-front-face {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.agent-card-container:hover .agent-front-face {
+  filter: blur(4px) brightness(0.4);
+  transform: scale(0.95);
+}
+
+.agent-trace-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.agent-card-container:hover .agent-trace-overlay {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ── Neural Trace Terminal ── */
+.neural-terminal {
+  flex: 1;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #10b981;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.05);
+}
+
+.terminal-header {
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.3);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: #34d399;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.terminal-line {
+  margin: 0.2rem 0;
+  text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+  opacity: 0.9;
+  animation: typeLine 0.2s ease-out forwards;
+}
+
+.terminal-line .timestamp {
+  color: #64748b;
+  margin-right: 0.5rem;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 12px;
+  background-color: #10b981;
+  animation: blinkCursor 1s step-end infinite;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+@keyframes typeLine {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 0.9; transform: translateY(0); }
+}
+
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Pulse Core ── */
+.pulse-core-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pulse-ring-1 {
+  stroke-dasharray: 20 10;
+  animation: spinRing 20s linear infinite;
+  transform-origin: center;
+}
+
+.pulse-ring-2 {
+  stroke-dasharray: 10 30;
+  animation: spinRing 15s linear infinite reverse;
+  transform-origin: center;
+}
+
+.pulse-center {
+  animation: pulseGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseGlow {
+  from { r: 5; opacity: 0.3; }
+  to { r: 15; opacity: 0.8; }
+}

@@ -1,0 +1,64 @@
+name: MAVVE Test Suite
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: mavve_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+          
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        cd backend
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio pytest-cov httpx
+        
+    - name: Setup Mock Environment Variables
+      run: |
+        echo "DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/mavve_db" >> $GITHUB_ENV
+        echo "REDIS_URL=redis://localhost:6379" >> $GITHUB_ENV
+        echo "BHASHINI_MOCK_MODE=true" >> $GITHUB_ENV
+        echo "GEMINI_API_KEY=mocked" >> $GITHUB_ENV
+        echo "WHATSAPP_API_TOKEN=mocked" >> $GITHUB_ENV
+        echo "WHATSAPP_PHONE_NUMBER_ID=mocked" >> $GITHUB_ENV
+        echo "WHATSAPP_VERIFY_TOKEN=mocked" >> $GITHUB_ENV
+        
+    - name: Run Pytest
+      run: |
+        cd backend
+        pytest --cov=api --cov=services --cov=agents tests/ -v
+        
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3

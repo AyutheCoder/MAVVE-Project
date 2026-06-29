@@ -1,0 +1,96 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL Database ────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: mavve-postgres
+    environment:
+      POSTGRES_DB: mavve_db
+      POSTGRES_USER: mavve
+      POSTGRES_PASSWORD: mavve_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - mavve_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mavve -d mavve_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mavve-network
+
+  # ── Redis Cache ────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: mavve-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - mavve_redis:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mavve-network
+
+  # ── FastAPI Backend ────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mavve-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://mavve:mavve_secret@postgres:5432/mavve_db
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - mavve-network
+
+  # ── React Frontend (Vite Dev Server) ───────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mavve-frontend
+    ports:
+      - "5175:5175"
+    environment:
+      VITE_API_URL: http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - mavve-network
+
+volumes:
+  mavve_pgdata:
+    driver: local
+  mavve_redis:
+    driver: local
+
+networks:
+  mavve-network:
+    driver: bridge
