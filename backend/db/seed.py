@@ -383,7 +383,7 @@ async def seed_database():
 
     async with AsyncSessionLocal() as session:
         existing_user = await session.execute(select(User).limit(1))
-        if existing_user.scalar_first() is not None:
+        if existing_user.scalars().first() is not None:
             print("✨ Database is already seeded. Skipping...")
             return
 
