@@ -13,7 +13,7 @@ from services.whatsapp_service import whatsapp
 from services.session_manager import SessionManager
 from agents.orchestrator import app as langgraph_app
 from services.bhashini_service import BhashiniService
-from db.database import SessionLocal
+from db.database import AsyncSessionLocal
 from models.order import Order
 
 logger = structlog.get_logger()
@@ -107,7 +107,7 @@ async def process_incoming_message(phone: str, message_data: dict):
             logger.info("session_terminal", phone=phone, disposition=state["final_disposition"])
             
             # Update Database
-            async with SessionLocal() as db:
+            async with AsyncSessionLocal() as db:
                 order_id = state["order_id"]
                 new_status = "VALIDATED" if state["final_disposition"] == "DISPATCH" else "CANCELLED"
                 

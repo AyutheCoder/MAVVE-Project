@@ -3,10 +3,6 @@ MAVVE — Multi-Agent Vernacular Validation Ecosystem
 Main FastAPI application entry point.
 """
 
-import sys
-print("=== MAVVE APP IMPORT STARTING ===", flush=True)
-print("SYS.ARGV:", sys.argv, flush=True)
-
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -48,7 +44,6 @@ logger = structlog.get_logger()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
-    print("=== LIFESPAN STARTING ===", flush=True)
     logger.info(
         "mavve_startup",
         app_name=settings.APP_NAME,
@@ -60,18 +55,13 @@ async def lifespan(app: FastAPI):
     # Auto-create tables in development mode
     if settings.APP_ENV == "development":
         try:
-            print("=== CREATING TABLES ===", flush=True)
             from db.database import create_all_tables
             await create_all_tables()
-            print("=== TABLES CREATED ===", flush=True)
             logger.info("database_tables_created")
         except Exception as e:
-            print(f"=== TABLE ERROR: {e} ===", flush=True)
             logger.warning("database_tables_creation_skipped", error=str(e))
 
-    print("=== LIFESPAN READY ===", flush=True)
     yield
-    print("=== LIFESPAN SHUTDOWN ===", flush=True)
     logger.info("mavve_shutdown")
 
 
