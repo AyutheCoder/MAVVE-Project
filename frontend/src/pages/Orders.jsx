@@ -93,12 +93,12 @@ export default function Orders() {
       
       {/* Filter Bar */}
       <div className="filter-bar glass-card">
-        <div className="filter-group" style={{flex: 1, minWidth: '250px'}}>
+        <div className="filter-group search-group">
           <Search size={18} className="search-icon" style={{position: 'absolute', marginLeft: '10px', color: 'var(--text-muted)'}} />
           <input 
             type="text" 
             className="filter-input" 
-            placeholder="Search Order ID or Phone..." 
+            placeholder="Search ID or Phone..." 
             style={{paddingLeft: '35px', width: '100%'}}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -127,14 +127,14 @@ export default function Orders() {
           </select>
         </div>
 
-        <div className="filter-group">
-          <span className="filter-label">Min Risk: {(riskFilter * 100).toFixed(0)}%</span>
+        <div className="filter-group risk-group">
+          <span className="filter-label">Risk: {(riskFilter * 100).toFixed(0)}%</span>
           <input 
             type="range" 
             min="0" max="1" step="0.05" 
             value={riskFilter}
             onChange={(e) => setRiskFilter(parseFloat(e.target.value))}
-            style={{width: '100px'}}
+            className="risk-slider"
           />
         </div>
       </div>

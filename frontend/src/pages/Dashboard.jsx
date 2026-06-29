@@ -581,7 +581,7 @@ export default function Dashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                 <XAxis dataKey="day" hide />
                 <YAxis stroke="#94a3b8" fontSize={12} />
-                <Tooltip contentStyle={{backgroundColor: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#f8fafc'}} itemStyle={{color: '#f8fafc'}} />
+                <Tooltip contentStyle={{backgroundColor: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#f8fafc', maxWidth: '220px', fontSize: '0.8rem'}} itemStyle={{color: '#f8fafc'}} formatter={(value) => typeof value === 'number' ? value.toFixed(2) + '%' : value} />
                 <Legend />
                 <Line type="monotone" dataKey="withoutMAVVE" stroke="#ef4444" strokeWidth={2} name="Baseline RTO %" dot={false} />
                 <Line type="monotone" dataKey="withMAVVE" stroke="#10b981" strokeWidth={3} name="MAVVE RTO %" dot={false} />
@@ -652,7 +652,7 @@ export default function Dashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
                 <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
                 <YAxis stroke="#94a3b8" fontSize={12} />
-                <Tooltip contentStyle={{backgroundColor: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#f8fafc'}} itemStyle={{color: '#f8fafc'}} />
+                <Tooltip contentStyle={{backgroundColor: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#f8fafc', maxWidth: '220px', fontSize: '0.8rem'}} itemStyle={{color: '#f8fafc'}} formatter={(value) => typeof value === 'number' ? value.toFixed(1) + '%' : value} />
                 <Legend />
                 <Bar dataKey="success" stackId="a" fill="#10b981" name="Resolved %" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="failed" stackId="a" fill="#ef4444" name="Escalated/Cancelled %" radius={[4, 4, 0, 0]} />
@@ -674,7 +674,7 @@ export default function Dashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
               <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} />
               <YAxis stroke="#94a3b8" fontSize={12} />
-              <Tooltip contentStyle={{backgroundColor: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#f8fafc'}} />
+              <Tooltip contentStyle={{backgroundColor: 'rgba(15,23,42,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#f8fafc', maxWidth: '220px', fontSize: '0.8rem'}} formatter={(value) => typeof value === 'number' ? '₹' + value.toFixed(1) + ' Cr' : value} />
               <Area type="monotone" dataKey="savings" stroke="#10b981" fill="#10b981" fillOpacity={0.3} strokeWidth={2} name="₹ Crore Saved" />
             </AreaChart>
           </ResponsiveContainer>
